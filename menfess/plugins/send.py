@@ -101,19 +101,20 @@ async def get_link(chat: Chat) -> str:
 async def on_transfer_coin_handler(client: Dk, msg: Message, db: Database = None):
     uid = msg.from_user.id
     helper = Helper(client, msg)
-    if not await helper.cek_join_channel(uid):
-        try:
-            get_chat = await client.get_chat(client.channel_1)
-            link = await get_link(get_chat)
-            await client.delete_messages(msg.chat.id, msg.id)
-            markup = InlineKeyboardMarkup([
-                [InlineKeyboardButton('Channel base', url=link)]
-            ])
-            sumonta = await client.send_message(client.channel_log, f"@{msg.from_user.username}\n\n<b>Tidak dapat mengirim pesan, harap join {get_chat.username} terlebih dahulu</b>", reply_markup=markup)
-            await asyncio.sleep(60)
-            return await sumonta.delete(revoke=True)
-        except:
-            pass
+    if msg.chat.type == enums.ChatType.GROUP or msg.chat.type == enums.ChatType.SUPERGROUP:
+        if not await helper.cek_join_channel(uid):
+            try:
+                get_chat = await client.get_chat(client.channel_1)
+                link = await get_link(get_chat)
+                await client.delete_messages(msg.chat.id, msg.id)
+                markup = InlineKeyboardMarkup([
+                    [InlineKeyboardButton('Channel base', url=link)]
+                ])
+                sumonta = await client.send_message(client.channel_log, f"@{msg.from_user.username}\n\n<b>Tidak dapat mengirim pesan, harap join {get_chat.username} terlebih dahulu</b>", reply_markup=markup)
+                await asyncio.sleep(60)
+                return await sumonta.delete(revoke=True)
+            except:
+                pass
     if re.search(r"^[\/]tf_coin(\s|\n)*$", msg.text or msg.caption):
         err = "<i>perintah salah /tf_coin [jmlh_coin]</i>" if msg.reply_to_message else "<i>perintah salah /tf_coin [id_user] [jmlh_coin]</i>"
         return await msg.reply(err, True)
