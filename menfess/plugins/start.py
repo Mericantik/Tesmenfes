@@ -48,25 +48,6 @@ async def on_start_handler(client: Client, msg: Message, db: Database = None):
     )
 
 
-@Dk.on_message(filters.group, group=-1)
-async def on_message_inside_group_handler(client: Dk, msg: Message):
-    uid = msg.from_user.id
-    helper = Helper(client, msg)
-    if not await helper.cek_join_channel(uid):
-        try:
-            await client.delete_messages(msg.chat.id, msg.id)
-            markup = InlineKeyboardMarkup([
-                [InlineKeyboardButton('Channel base', url=f'https://t.me/menfesonsbase')]
-            ])
-            sumonta = await client.send_message(client.channel_log, f"@{msg.from_user.username}\n\n<b>Tidak dapat mengirim pesan, harap join @menfesonsbase terlebih dahulu</b>", reply_markup=markup)
-            await asyncio.sleep(60)
-            await sumonta.delete(revoke=True)
-        except:
-            pass
-    return await msg.continue_propagation()
-
-
-
 @Bot("status")
 async def status_handler(client: Client, msg: Message, db: Database = None):
     helper = Helper(client, msg)

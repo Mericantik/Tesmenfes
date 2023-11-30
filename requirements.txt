@@ -7,3 +7,4 @@ pytz
 pytz-deprecation-shim==0.1.0.post0
 TgCrypto
 python-dotenv
+pyromod
