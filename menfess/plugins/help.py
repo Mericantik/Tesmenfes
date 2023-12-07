@@ -1,6 +1,7 @@
 from pyrogram import Client, enums, types
 from menfess.helpers import Database, Helper
 from menfess.helpers.decorators import Bot
+from menfess.dk import Dk
 
 
 @Bot("help")
@@ -10,50 +11,47 @@ async def on_help_handler(client: Client, msg: types.Message, db: Database):
     pesan += '/status — melihat status\n'
     pesan += '/topup — top up coin\n'
     pesan += '/tf_coin — transfer coin\n'
-    pesan += '/rubahstatus — merubah status\n'
-    if member.status == 'admin':
-        pesan += '\nHanya Admin\n'
-        pesan += '/tf_coin — transfer coin\n'
-        pesan += '/settings — melihat settingan bot\n'
-        pesan += '/list_admin — melihat list admin\n'
-        pesan += '/list_ban — melihat list banned\n\n'
-        pesan += 'Perintah banned\n'
-        pesan += '/ban — ban user\n'
-        pesan += '/unban — unban user\n'
+    pesan += '/coget — untuk memberikan koin random kepada penguna yang tercepat dan beruntung\n'
     if member.status == 'owner':
         pesan += '\n=====OWNER COMMAND=====\n'
         pesan += '/tf_coin — transfer coin\n'
         pesan += '/settings — melihat settingan bot\n'
-        pesan += '/list_admin — melihat list admin\n'
-        pesan += '/list_ban — melihat list banned\n'
         pesan += '/stats — melihat statistik bot\n'
         pesan += '/bot — setbot (on|off)\n'
-        pesan += '\n=====FITUR TALENT=====\n'
-        pesan += '/addtalent — menambahkan talent baru\n'
-        pesan += '/addsugar — menambahkan talent daddy sugar\n'
-        pesan += '/addproplayer — menambahkan talent proplayer\n'
-        pesan += '/addtemancurhat — menambahkan talent teman curhat\n'
-        pesan += '/addgf — menambahkan talent girlfriend rent\n'
-        pesan += '/addbf — menambahkan talent boyfriend rent\n'
-        pesan += '/addborneo — menambahkan status borneoensis\n'
-        pesan += '/addjakartans — menambahkan status jakartans\n'
-        pesan += '/addbalinese — menambahkan status balinese\n'
-        pesan += '/addpickme — menambahkan status pick me\n'
-        pesan += '/addsadgirl — menambahkan status sad girl\n'
-        pesan += '/addbabygirl — menambahkan status baby girl\n'
-        pesan += '/addabg — menambahkan status abg\n'
-        pesan += '/addmelayu — menambahkan status melayu\n'
-        pesan += '/addwongjowo — menambahkan status wong jowo\n'
-        pesan += '/addbodygoals — menambahkan status bodygoals\n'
-        pesan += '/hapus — menghapus talent\n'
         pesan += '\n=====BROADCAST OWNER=====\n'
         pesan += '/broadcast — mengirim pesan broadcast kesemua user\n'
-        pesan += '/admin — menambahkan admin baru\n'
-        pesan += '/unadmin — menghapus admin\n'
-        pesan += '/member — penguna dijadikan member\n'
-        pesan += '/unmember — penguna dijadikan unmember\n'
-        pesan += '/list_ban — melihat list banned\n'
-        pesan += '\n=====BANNED COMMAND=====\n'
-        pesan += '/ban — ban user\n'
-        pesan += '/unban — unban user\n'
+        pesan += '\n=====SET BOT=====\n'
+        pesan += '/setbiayapinnedmenfes — mengirim mengubah biaya pinned\n'
+        pesan += '/setbiayahapusmenfes — mengirim mengubah biaya hapus\n'
+        pesan += '/setbiayasendmenfes — mengirim mengubah biaya kirim menfes\n'
+        pesan += '/setdailysend — mengirim mengubah biaya daily send\n'
+        pesan += '/setchannellog — mengirim mengubah channel log\n'
+        pesan += '/setchannelorgrub — mengirim mengubah channel 2\n'
+        pesan += '/setchannelpost — mengirim mengubah channel post\n'
+        pesan += '/profilbot — melihat bot\n'
+
+
     await msg.reply(pesan, True)
+
+@Dk.Bot("help")
+async def on_topup_module_handler(client: Dk, msg: types.Message, db: Database = None):
+    db_user = db.get_data_pelanggan()
+    anu = Helper(client, msg)
+    first_name = msg.from_user.first_name
+    last_name = msg.from_user.last_name
+    fullname = first_name if not last_name else first_name + ' ' + last_name
+    username = '@nazhak' if not msg.from_user.username else '@' + msg.from_user.username
+    mention = msg.from_user.mention
+    markup = types.InlineKeyboardMarkup([
+        [types.InlineKeyboardButton('rules', callback_data='rules'),
+         types.InlineKeyboardButton('help', callback_data='help'),
+         types.InlineKeyboardButton('status', callback_data='status')]
+    ])
+    return await client.send_message(db_user.id, client.rules.format(
+        id=msg.from_user.id,
+        mention=mention,
+        username=username,
+        first_name=await anu.escapeHTML(first_name),
+        last_name=await anu.escapeHTML(last_name),
+        fullname=await anu.escapeHTML(fullname)
+    ), reply_markup=markup)
