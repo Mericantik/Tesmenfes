@@ -6,22 +6,6 @@ load_dotenv(".env") #
 
 daget_claim_group = int(os.environ.get("DAGET_CLAIM_GROUP", -1001603368620))
 
-api_id = int(os.environ.get("API_ID", "20244703"))
-api_hash = os.environ.get("API_HASH", "aecd498f68e85c1c925a6a9f95103aee")
-bot_token = os.environ.get("BOT_TOKEN", "5585848548:AAGVy_rekbrnMhkc2UAYrSWPQbEC3r5GBZI")
-# =========================================================== #
-
-db_url = os.environ.get("DB_URL", "mongodb+srv://dimashermawan2000:dimashermawan11@onsdatabase.vcrlaan.mongodb.net/?retryWrites=true&w=majority")
-db_name = os.environ.get("DB_NAME", "telegram") #bisa diganti sesuai kebutuhan
-# =========================================================== #
-
-channel_1 = int(os.environ.get("CHANNEL_1", "-1001771712186"))
-channel_2 = int(os.environ.get("CHANNEL_2", "-1001803682852")) # untuk group comentar user
-channel_tf = int(os.environ.get("CHANNEL_TF", "-1001926953231"))
-channel_log = int(os.environ.get("CHANNEL_LOG", "-1001746107587"))
-# =========================================================== #
-
-id_admin = int(os.environ.get("ID_ADMIN", "6285983311"))
 # =========================================================== #
 
 daget = 0
