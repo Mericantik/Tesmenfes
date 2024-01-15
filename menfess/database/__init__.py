@@ -4,7 +4,7 @@ import config
 import json
 
 
-myclient = pymongo.MongoClient(config.db_url)
+myclient = pymongo.MongoClient(config.DB_URL)
 mydb = myclient[config.db_name]
 
 #mycol = mydb['user']
