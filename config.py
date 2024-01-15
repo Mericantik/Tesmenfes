@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 # load from .env
 load_dotenv(".env") #
+DB_URL = os.getenv("DB_URL", 0).split()))
 
 daget_claim_group = int(os.environ.get("DAGET_CLAIM_GROUP", -1001603368620))
 
